@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Category</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "/>
+    <script defer th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script defer th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<nav  th:replace="fragments/navbar :: nav_fragment"></nav>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="offset-3 col-5">
+            <div th:if="${message}" th:text="${message}" th:class="${alertClass}"></div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${categoryViews == null || categoryViews.isEmpty()}" >
+                    <th scope="row" ></th>
+                    <td > No records</td>
+                </tr>
+                <tr th:unless="${categoryViews == null || categoryViews.isEmpty()}" th:each="category : ${categoryViews}" >
+                    <th scope="row" th:text="${category.id}" ></th>
+                    <td th:text="${category.name}"></td>
+                    <td th:text="${category.date}"></td>
+                    <td>
+                        <a class="btn btn-danger" th:href="@{/category/delete/{id} (id= ${category.id})}" th:attr="name='id'">Delete</a>
+                    </td>
+
+                    <td ></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-primary" th:href="@{/category/form}" >Add new Category</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

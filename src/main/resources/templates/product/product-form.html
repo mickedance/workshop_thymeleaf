@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${id==null}">Add Product</title>
+    <title th:unless="${id==null}">Update Product</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "/>
+    <script defer th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script defer th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+    <script defer th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<nav  th:replace="fragments/navbar :: nav_fragment"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="offset-3 col-3">
+            <form  method="post" th:action=" ${id} == null ? @{/product/add} :  @{/product/updateProduct}"  th:object="${form}" >
+                <label th:if="${id!=null}" class="form-label" >ID</label>
+
+                <input readonly th:if="${id!=null}" th:field="*{id}" >
+                <br><br>
+                <div class="mb-3">
+                    <label class="form-label" >Name</label>
+                    <input type="text"  th:field="*{name}" class="form-control" >
+                </div>
+                <div th:if="${#fields.hasErrors('name')}" >
+                    <ul th:each="err : ${#fields.errors('name')}" class="alert-danger" >
+                        <li th:text="${err}" >
+                        </li>
+                    </ul>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" >Price</label>
+                    <input type="number"  th:field="*{price}" class="form-control" >
+                </div>
+                <div th:if="${#fields.hasErrors('price')}" >
+                    <ul th:each="err : ${#fields.errors('price')}" class="alert-danger" >
+                        <li th:text="${err}" >
+                        </li>
+                    </ul>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" >Category</label>
+                    <select  th:field="*{categoryId}"  class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                        <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
+                    </select>
+                </div>
+                <div th:if="${#fields.hasErrors('categoryId')}" >
+                    <ul th:each="err : ${#fields.errors('categoryId')}" class="alert-danger" >
+                        <li th:text="${err}" >
+                        </li>
+                    </ul>
+                </div>
+                <button type="submit" class="btn btn-primary" th:if="${id==null}">Submit</button>
+                <button type="submit" class="btn btn-info" th:unless="${id==null}">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
